@@ -1,0 +1,222 @@
+version: 2
+jobs:
+
+  build:
+    environment:
+      - TZ: "/usr/share/zoneinfo/America/Los_Angeles"
+      - CONTAINER_NAME: "vanessa/example.scif"
+
+    docker:
+      - image: docker:18.01.0-ce-git
+    working_directory: /tmp/src/example.scif
+    steps:
+      - run:
+          name: Install parallel gzip and python3
+          command: apk add --no-cache pigz python3
+      - restore_cache:
+          keys:
+            - docker-v1-{{ .Branch }}-{{ epoch }}
+            - docker-v1-{{ .Branch }}-
+            - docker-v1-master-
+            - docker-v1-
+          paths:
+            - /tmp/cache/container.tar.gz
+
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Load Docker image layer cache
+          no_output_timeout: 30m
+          command: |
+            docker info
+            set +o pipefail
+            if [ -f /tmp/cache/container.tar.gz ]; then
+              pigz -d --stdout /tmp/cache/container.tar.gz | docker load
+            fi
+            docker images
+      - run:
+          name: Build Docker image
+          no_output_timeout: 60m
+          command: |
+            # Build docker image
+            e=1 && for i in {1..5}; do
+              docker build \
+                --cache-from=${CONTAINER_NAME} \
+                --rm=false \
+                -t ${CONTAINER_NAME}:latest \
+                --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
+                --build-arg VCS_REF=`git rev-parse --short HEAD` \
+                --build-arg VERSION="${CIRCLE_TAG:-$THISVERSION}" . \
+              && e=0 && break || sleep 15
+            done && [ "$e" -eq "0" ]
+            # SCIF VERSION
+            #THISVERSION=$( python3 get_version.py )
+            #if [[ ${THISVERSION:0:1} == "0" ]] ; then
+            #  echo "WARNING: latest git tag could not be found"
+            #  echo "Please, make sure you fetch all tags from upstream with"
+            #  echo "the command ``git fetch --tags --verbose`` and push"
+            #  echo "them to your fork with ``git push origin --tags``"
+            #fi
+            #echo "${CIRCLE_TAG:-$THISVERSION}" > mriqc/VERSION
+      - run:
+          name: Docker save
+          no_output_timeout: 40m
+          command: |
+            mkdir -p /tmp/cache
+            docker save ubuntu:xenial-20161213 ${CONTAINER_NAME}:latest \
+              | pigz -2 -p 3 > /tmp/cache/container.tar.gz
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - cache/container.tar.gz
+            - src/example.scif
+
+  get_data:
+    machine:
+      # Ubuntu 14.04 with Docker 17.10.0-ce
+      image: circleci/classic:201711-01
+    environment:
+      - TZ: "/usr/share/zoneinfo/America/Los_Angeles"
+    working_directory: /home/circleci/data
+    steps:
+      - restore_cache:
+          keys:
+            - data-v1-{{ epoch }}
+            - data-v1-
+      - run:
+          name: Get test data
+          command: |
+            mkdir -p /tmp/data
+            echo "We could download test data here."
+      - run:
+          name: Create config files
+          command: |
+            mkdir -p /tmp/config
+            echo "We could create config files here."
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - data
+            - config
+      - save_cache:
+         key: data-v1-{{ epoch }}
+         paths:
+            - /tmp/data
+            - /tmp/config
+
+  update_cache:
+    machine:
+      # Ubuntu 14.04 with Docker 17.10.0-ce
+      image: circleci/classic:201711-01
+    working_directory: /tmp/src/example.scif
+    steps:
+      - attach_workspace:
+          at: /tmp
+      - save_cache:
+         key: docker-v1-{{ .Branch }}-{{ epoch }}
+         paths:
+            - /tmp/cache/container.tar.gz
+
+  test_apps:
+    machine:
+      image: circleci/classic:201711-01
+    environment:
+      - CONTAINER_NAME: "vanessa/example.scif"
+    working_directory: /home/circleci/out/tests
+    steps:
+      - attach_workspace:
+          at: /tmp
+      - run:
+          name: Load Docker image layer cache
+          no_output_timeout: 30m
+          command: |
+            docker info
+            set +o pipefail
+            if [ -f /tmp/cache/container.tar.gz ]; then
+              sudo apt update && sudo apt -y install pigz
+              pigz -d --stdout /tmp/cache/container.tar.gz | docker load
+              docker images
+            fi
+      - run:
+          name: List SCIF Apps
+          no_output_timeout: 2h
+          command: |
+            docker run -it --rm=false \
+              ${CONTAINER_NAME}:latest scif apps
+      - store_test_results:
+          path: /home/circleci/out/tests
+
+  deploy:
+    machine:
+      image: circleci/classic:201711-01
+    environment:
+      - CONTAINER_NAME: "vanessa/example.scif"    
+    working_directory: /tmp/src/example.scif
+    steps:
+      - attach_workspace:
+          at: /tmp
+      - run:
+          name: Load Docker image layer cache
+          no_output_timeout: 30m
+          command: |
+            docker info
+            set +o pipefail
+            if [ -f /tmp/cache/docker.tar.gz ]; then
+              sudo apt update && sudo apt -y install pigz
+              pigz -d --stdout /tmp/cache/container.tar.gz | docker load
+              docker images
+            fi
+      - run:
+          name: Deploy to Docker Hub
+          no_output_timeout: 40m
+          command: |
+            if [[ -n "$DOCKER_PASS" ]]; then
+              docker login -u $DOCKER_USER -p $DOCKER_PASS
+              docker push ${CONTAINER_NAME}:latest
+              docker tag ${CONTAINER_NAME} ${CONTAINER_NAME}:$CIRCLE_TAG
+              docker push ${CONTAINER_NAME}:$CIRCLE_TAG
+            fi
+
+workflows:
+  version: 2
+  build_test_deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
+
+      - get_data:
+          filters:
+            branches:
+              ignore: /docs?\/.*/
+            tags:
+              only: /.*/
+
+      - update_cache:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /docs?\/.*/
+            tags:
+              only: /.*/
+
+      - test_apps:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /docs?\/.*/
+            tags:
+              only: /.*/
+
+      - deploy:
+          requires:
+            - build
+            - test_apps
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/
