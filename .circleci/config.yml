@@ -57,7 +57,7 @@ jobs:
             #  echo "the command ``git fetch --tags --verbose`` and push"
             #  echo "them to your fork with ``git push origin --tags``"
             #fi
-            #echo "${CIRCLE_TAG:-$THISVERSION}" > mriqc/VERSION
+            #echo "${CIRCLE_TAG:-$THISVERSION}" > example.scif/VERSION
       - run:
           name: Docker save
           no_output_timeout: 40m
