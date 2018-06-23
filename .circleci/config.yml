@@ -62,8 +62,9 @@ jobs:
           name: Docker save
           no_output_timeout: 40m
           command: |
+            echo "Saving ${CONTAINER_NAME} to container.tar.gz"
             mkdir -p /tmp/cache
-            docker save ubuntu:xenial-20161213 vanessa/example.scif:latest \
+            docker save ${CONTAINER_NAME}:latest \
               | pigz -2 -p 3 > /tmp/cache/container.tar.gz
       - persist_to_workspace:
           root: /tmp
