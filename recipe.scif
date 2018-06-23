@@ -1,0 +1,43 @@
+%apprun samtools
+    exec /usr/bin/samtools "$@"
+%appinstall samtools
+    apt-get update && apt-get install -y samtools
+%apphelp samtools
+    This app provides Samtools suite
+%applabels samtools
+    VERSION 1.7
+    URL http://www.htslib.org/
+%apptest samtools
+    exec /usr/bin/samtools "$@"
+
+
+%applabels bowtie
+    VERSION 2.2.7
+%appinstall bowtie
+    curl -Lk -o bowtie.zip https://sourceforge.net/projects/bowtie-bio/files/bowtie2/2.2.7/bowtie2-2.2.7-linux-x86_64.zip/download
+    unzip bowtie.zip
+    mv bowtie2-2.2.7/* bin/
+%apptest bowtie
+    exec /scif/bowtie/bin/bowtie2 "$@"
+
+  
+%applabels cufflinks
+    VERSION 2.2.1
+%appinstall cufflinks
+    curl -Lk -o cufflinks.tar.gz   http://cole-trapnell-lab.github.io/cufflinks/assets/downloads/cufflinks-2.2.1.Linux_x86_64.tar.gz
+    tar -xzvf cufflinks.tar.gz
+    mv cufflinks-2.2.1.Linux_x86_64/* bin/
+%apptest cufflinks
+    exec /scif/cufflinks/bin/cufflinks "$@"
+
+
+%applabels tophat
+    VERSION 2.1.0
+%appenv tophat
+    PATH=/scif/apps/bowtie/bin:/usr/bin:$PATH
+%appinstall tophat  
+    curl -Lk -o tophat.tar.gz https://ccb.jhu.edu/software/tophat/downloads/tophat-2.1.0.Linux_x86_64.tar.gz
+    tar -xzvf tophat.tar.gz
+    mv tophat-2.1.0.Linux_x86_64/* bin/
+%apptest tophat
+    exec /scif/tophat/bin/tophat "$@"
