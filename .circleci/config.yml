@@ -142,8 +142,18 @@ jobs:
           name: List SCIF Apps
           no_output_timeout: 2h
           command: |
+            echo "The applications installed in this container are:"
             docker run -it --rm=false \
-              ${CONTAINER_NAME}:latest scif apps
+              ${CONTAINER_NAME}:latest apps
+      - run:
+          name: Show SCIF Help
+          no_output_timeout: 2h
+          command: |
+            echo "The help for each app is the following:"
+            for app in $(docker run -it --rm=false ${CONTAINER_NAME}:latest apps); 
+                do
+                    docker run -it --rm=false ${CONTAINER_NAME}:latest help "${app}"
+                done
       - store_test_results:
           path: /home/circleci/out/tests
 
@@ -187,6 +197,9 @@ workflows:
             tags:
               only: /.*/
 
+      # This is the step in the workflow to download data dependencies. We could
+      # have a static file in the repo where the user is instruction to put a list
+      # of files (or just a script to run, etc.)
       - get_data:
           filters:
             branches:
@@ -203,6 +216,8 @@ workflows:
             tags:
               only: /.*/
 
+      # This is where we can run tests - since we use SCIF we can issue the 
+      # command to list the apps, then run the test over each one.
       - test_apps:
           requires:
             - build
@@ -212,6 +227,8 @@ workflows:
             tags:
               only: /.*/
 
+      # This is where we can upload the container to some final resting spot :)
+      # Additionally, we could have a step to generate documentation (put it somewhere)
       - deploy:
           requires:
             - build
