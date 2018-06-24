@@ -10,7 +10,11 @@ and associated repository will help you to turn your scientific software into a 
  - **Discoverability** and **Transparency** are handled by installing our software in the container via a [Scientific Filesystem](https://sci-f.github.io). SCIF also lets us install the same dependencies across container technologies.
  - **Testing** is handled by continuous integration, which understands how to interact with a scientific filesystem.
 
-Each of these components plays a slightly different and equally important role. Without [SCIF](https://sci-f.github.io), we wouldn't have any consistency in the commands that we can execute to the container to discovery the software. Without container technologies, you could install software on your host, but (as we all know) this would likely not be a portable solution. Without testing, we couldn't be sure that our software works as we intended, and is ready to plug into some pipeline tool. To get started, follow each of the links below to learn how to generate your own his will be consolidated into a tutorial, and for now follow the links below:
+Each of these components plays a slightly different and equally important role. Without [SCIF](https://sci-f.github.io), we wouldn't have any consistency in the commands that we can execute to the container to discovery the software. Without container technologies, you could install software on your host, but (as we all know) this would likely not be a portable solution. Without testing, we couldn't be sure that our software works as we intended, and is ready to plug into some pipeline tool. The template repository here will help you create a workflow with these steps:
+
+![assets/img/circle.png](assets/img/circle.png)
+
+that will ensure your software is packaged, tested, and ready for use! To get started, follow each of the links below to learn how to generate your own his will be consolidated into a tutorial, and for now follow the links below:
 
 ## Getting Started
 

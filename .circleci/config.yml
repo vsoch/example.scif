@@ -183,10 +183,11 @@ jobs:
           command: |
             echo "Looking for Docker deployment options"
             if [[ -n "$DOCKER_PASS" ]]; then
-              docker login -u $DOCKER_USER -p $DOCKER_PASS
+              docker login -u $DOCKER_USER --password-stdin $DOCKER_PASS
               docker push ${CONTAINER_NAME}:latest
-              docker tag ${CONTAINER_NAME} ${CONTAINER_NAME}:$CIRCLE_TAG
-              docker push ${CONTAINER_NAME}:$CIRCLE_TAG
+              #TODO: we need to have some version/tag standard here
+              #docker tag ${CONTAINER_NAME} ${CONTAINER_NAME}:$CIRCLE_TAG
+              #docker push ${CONTAINER_NAME}:$CIRCLE_TAG
             fi
 
 workflows:
