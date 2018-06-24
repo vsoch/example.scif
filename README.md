@@ -1,6 +1,7 @@
 # Scientific Filesystem Container Builder
 
 [![scif](https://img.shields.io/badge/filesystem-scientific-green.svg?style=for-the-badge)](https://sci-f.github.io)
+[![CircleCI](https://circleci.com/gh/vsoch/example.scif.svg?style=svg)](https://circleci.com/gh/vsoch/example.scif)
 
 A proof of concept of a RNA-Seq pipeline. Here we combine three technologies to handle each of the following:
 

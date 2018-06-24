@@ -152,7 +152,7 @@ jobs:
             echo "The help for each app is the following:"
             for app in $(docker run -it --rm=false ${CONTAINER_NAME}:latest apps); 
                 do
-                    docker run -it --rm=false ${CONTAINER_NAME}:latest help "${app}"
+                    docker run -it --rm=false ${CONTAINER_NAME}:latest help ${app}
                 done
       - store_test_results:
           path: /home/circleci/out/tests
@@ -172,7 +172,7 @@ jobs:
           command: |
             docker info
             set +o pipefail
-            if [ -f /tmp/cache/docker.tar.gz ]; then
+            if [ -f /tmp/cache/container.tar.gz ]; then
               sudo apt update && sudo apt -y install pigz
               pigz -d --stdout /tmp/cache/container.tar.gz | docker load
               docker images
@@ -181,6 +181,7 @@ jobs:
           name: Deploy to Docker Hub
           no_output_timeout: 40m
           command: |
+            echo "Looking for Docker deployment options"
             if [[ -n "$DOCKER_PASS" ]]; then
               docker login -u $DOCKER_USER -p $DOCKER_PASS
               docker push ${CONTAINER_NAME}:latest

@@ -1,6 +1,7 @@
 # Scientific Filesystem Container Builder
 
 [![scif](https://img.shields.io/badge/filesystem-scientific-green.svg?style=for-the-badge)](https://sci-f.github.io)
+[![CircleCI](https://circleci.com/gh/vsoch/example.scif.svg?style=svg)](https://circleci.com/gh/vsoch/example.scif)
 
 Hi friends! Welcome to the documentation for the [Scientific Filesystem Container Builder](https://www.github.com/vsoch/example.scif) example. This documentation
 and associated repository will help you to turn your scientific software into a tested, reproducible container to share with others. We are going to be combining three technologies to handle each of the following:
