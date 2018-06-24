@@ -5,18 +5,18 @@ What the heck is a recipe? It's a text file that has instructions for install, r
 
 ## Quick Start
 
- 1. Edit the [recipe.scif](../recipe.scif) file to include an app section (described below) for each of the functions in your container. This means chunks of text to add files, describe install sequences, write help, and test. You can read about the [different sections in Table 1 here](https://academic.oup.com/gigascience/article/7/5/giy023/4931737#tbl1).
+ 1. Edit the [recipe.scif](https://github.com/vsoch/example.scif/blob/master/recipe.scif) file to include an app section (described below) for each of the functions in your container. This means chunks of text to add files, describe install sequences, write help, and test. You can read about the [different sections in Table 1 here](https://academic.oup.com/gigascience/article/7/5/giy023/4931737#tbl1).
  2. Add any external file dependencies to this repository. (We will soon be writing instructions here to describe a protocol for adding data (and download / mount on CI to test)
 
 
 ## Detailed Start
-What are we looking at in the repository? When building pipelines, you can think of it like baking a cake. We have entire recipes for creating our final products (containers), and within those recipes ingredients (software) that we need to add. In this first part, we will talk about the three recipes in this repository, the [Dockerfile](../Dockerfile) for the Docker container, and the [recupe.scif](../recipe.scif) for the Scientific Filesystem.
+What are we looking at in the repository? When building pipelines, you can think of it like baking a cake. We have entire recipes for creating our final products (containers), and within those recipes ingredients (software) that we need to add. In this first part, we will talk about the three recipes in this repository, the [Dockerfile](https://github.com/vsoch/example.scif/blob/master/Dockerfile) for the Docker container, and the [recupe.scif](https://github.com/vsoch/example.scif/blob/master/recipe.scif) for the Scientific Filesystem.
 
 
 ### The Scientific Filesystem Recipe
 A scientific filesystem is useful because it allows me to write one recipe for my various software, and then install easily in different containers or on my host. How do you know when you find a recipe? When you find a recipe for a scientific filesystem (SCIF), you will see a file with extension *.scif. For example, in this repository:
 
- - [recipe.scif](../recipe.scif) is the recipe for the scientific filesystem that will be installed in the container. SCIF is flexible in that there are **many** different internal applications defined in this one file, however if we wanted we could put them in individual files and install them equivalently. For example, given the apps "samtools" "tophat" and "bowtie" and using a single recipe file `recipe.scif`, I would install like:
+ - [recipe.scif](https://github.com/vsoch/example.scif/blob/master/recipe.scif) is the recipe for the scientific filesystem that will be installed in the container. SCIF is flexible in that there are **many** different internal applications defined in this one file, however if we wanted we could put them in individual files and install them equivalently. For example, given the apps "samtools" "tophat" and "bowtie" and using a single recipe file `recipe.scif`, I would install like:
 
 ```
 /usr/local/bin/scif install recipe.scif
@@ -31,7 +31,7 @@ but I could also define the different applications in separate files, and these 
 ```
 
 Why might you want to do this? You might want to combine recipes, or have different maintainers and keep the files separate for a clean
-distinction. This level of modularity is up to the user. For this repository, I've decided to provide the core applications in [recipe.scif](../recipe.scif). 
+distinction. This level of modularity is up to the user. For this repository, I've decided to provide the core applications in [recipe.scif](https://github.com/vsoch/example.scif/blob/master/recipe.scif). 
 Let's take a quick look at an example section:
 
 ```bash

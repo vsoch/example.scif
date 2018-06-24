@@ -8,7 +8,7 @@ For the build step, this is what happens:
 First we will review these different kinds of recipes, and then we will show you how to do this build step (when you get errors of some kind).
 
 ## The Docker Recipe
-If you are familar with Docker, you will know that the [Dockerfile](../Dockerfile) is the recipe for building our container. You will also notice the installation is simple - we start with a container base that was equivalently used by the creator of the pipeline with system / host dependencies, and then simply install the SCIF recipe to it. That comes down to these three commands:
+If you are familar with Docker, you will know that the [Dockerfile](https://github.com/vsoch/example.scif/blob/master/Dockerfile) is the recipe for building our container. You will also notice the installation is simple - we start with a container base that was equivalently used by the creator of the pipeline with system / host dependencies, and then simply install the SCIF recipe to it. That comes down to these three commands:
 
 ```
 RUN /usr/local/bin/pip install scif    # Install scif from pypi
@@ -71,7 +71,7 @@ you can then shell inside:
 docker run -it --entrypoint bash vanessa/example.scif
 ```
 
-And manually run commands to test. When you are happy with a command, write it into your [recipe.scif](..recipe.scif). Keep in mind
+And manually run commands to test. When you are happy with a command, write it into your [recipe.scif](https://github.com/vsoch/example.scif/blob/master/recipe.scif). Keep in mind
 that during the actual install, the present working directory will always be `/scif/apps/<appname>` and the environment (`%env` section) will be sourced. The folders "bin" and
 "lib" will also exist for you in the `$SCIF_APPROOT` environment variable. Actually, there are [lots of environment variables](https://sci-f.github.io///spec-v1#environment-namespace) that you can use!
 

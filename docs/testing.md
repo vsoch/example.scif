@@ -40,7 +40,7 @@ docker pull vanessa/example.scif
 You'll notice the template has a "hidden" directory called `.circleci` with a `config.yml` inside. This is a file that defines the workflow
 to define the steps that we described above. Importantly, you don't need to edit this, because the steps already know
 to build your container from your Dockerfile, and how to interact with it via issuing commands to the scientific filesystem.
-All you need to do is write tests for your applications, and this is done in the [recipe.scif](../recipe.scif)
+All you need to do is write tests for your applications, and this is done in the [recipe.scif](https://github.com/vsoch/example.scif/blob/master/recipe.scif)
 
 ## Step 1: Write tests
 The testing section discovers the apps in your container like this:
