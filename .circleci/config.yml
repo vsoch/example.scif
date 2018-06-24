@@ -236,6 +236,6 @@ workflows:
             - test_apps
           filters:
             branches:
-              ignore: /.*/
+              ignore: /docs?\/.*/
             tags:
               only: /.*/
