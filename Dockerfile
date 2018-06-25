@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y wget \
                                          python
 
 # Install scif from pypi
-RUN /opt/conda/bin/pip install scif==0.0.74
+RUN /opt/conda/bin/pip install scif==0.0.75
 
 # Install the filesystem from the recipe
 ADD *.scif /
