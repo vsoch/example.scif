@@ -1,0 +1,28 @@
+#Topnav dropdowns
+topnav_dropdowns:
+- title: Topnav dropdowns
+  folders:
+    - title: Quick Links
+      folderitems:
+        - title: Encode Project
+          external_url: https://www.encodeproject.org
+        - title: The Scientific Filesystem
+          external_url: https://sci-f.github.io
+        - title: Github
+          external_url: https://github.com/vsoch/example.scif
+    - title: Pipelines
+      folderitems:
+        - title: Atac-Seq Pipeline
+          external_url: https://github.com/ENCODE-DCC/atac-seq-pipeline
+        - title: HIC uniform processing pipeline
+          external_url: https://github.com/ENCODE-DCC/hic-pipeline
+        - title: Chip-Seq Processing Pipeline
+          external_url: https://github.com/ENCODE-DCC/chip-seq-pipeline          
+
+## Topnav single links
+## if you want to list an external url, use external_url instead of url. the theme will apply a different link base.
+topnav:
+- title: Topnav
+  items:
+    - title: News
+      url: /blog

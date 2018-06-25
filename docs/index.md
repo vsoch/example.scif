@@ -1,7 +1,10 @@
-# Scientific Filesystem Container Builder
-
-[![scif](https://img.shields.io/badge/filesystem-scientific-green.svg?style=for-the-badge)](https://sci-f.github.io)
-[![CircleCI](https://circleci.com/gh/vsoch/example.scif.svg?style=svg)](https://circleci.com/gh/vsoch/example.scif)
+---
+title: Scientific Filesystem Container Builder
+keywords: encode,scif,containers
+sidebar: main_sidebar
+permalink: index.html
+toc: false
+---
 
 Hi friends! Welcome to the documentation for the [Scientific Filesystem Container Builder](https://www.github.com/vsoch/example.scif) example. This documentation
 and associated repository will help you to turn your scientific software into a tested, reproducible container to share with others. We are going to be combining three technologies to handle each of the following:
@@ -18,18 +21,18 @@ that will ensure your software is packaged, tested, and ready for use! To get st
 
 ## Getting Started
 
- - [1. Clone the Repository](setup.md): The first step is to clone this repository to your Github account.
- - [2. Write Your Recipe](recipes.md): The container build and testing is driven by defining your Scientific Filesystem in a [recipe.scif](recipe.scif)
- - [3. Build a Container](bulid.md): (optional) you will likely want to build a container, either to develop or run locally.
- - [4. Testing Criteria](testing.md): Once you push to Github, you will need to connect to a Continuous Integration service ([CircleCI](https://circleci.com/gh/vsoch/example.scif/) is used for this repository.
+ - [1. Clone the Repository](/setup): The first step is to clone this repository to your Github account.
+ - [2. Write Your Recipe](/recipes): The container build and testing is driven by defining your Scientific Filesystem in a [recipe.scif](recipe.scif)
+ - [3. Build a Container](/bulid): (optional) you will likely want to build a container, either to develop or run locally.
+ - [4. Testing Criteria](/testing): Once you push to Github, you will need to connect to a Continuous Integration service ([CircleCI](https://circleci.com/gh/vsoch/example.scif/) is used for this repository.
 
 After you write your recipe, making sure to add your scripts and other dependencies to this repository, connect it to test on Circle, and the tests pass, the container will be deployed for others to use.
 
 ## Continued Development
 After setup, you will still want to add new features and otherwise update your software. But since others are likely using it, you need to do this carefully! Here we will give some advice to do this.
 
- - [Github Development](development.md): if you aren't familiar with the Github flow to checkout branches for new features and changes.
- - [Using the Container](usage.md): How to interact with the SCIF in your container, after you've developed it.
+ - [Github Development](/development): if you aren't familiar with the Github flow to checkout branches for new features and changes.
+ - [Using the Container](/usage): How to interact with the SCIF in your container, after you've developed it.
  - [Example](example.md): a concrete usage example for the recipe provided in this repository, which has samtools, cufflinks, tophat, and bowtie.
 
 ## Additional Resources
@@ -40,3 +43,34 @@ After setup, you will still want to add new features and otherwise update your s
 ## Need Help?
 
 If you need help, please don't hesitate to [reach out](https://www.github.com/vsoch/example.scif/issues) and we will help you!
+
+<hr style="margin-top:20px">
+
+<div class="row">
+  {% assign loopcount = 1 %}
+  {% for post in site.posts %}
+
+   {% if loopcount < 4 %}
+
+   <!-- Parse news-->
+   {% if post.category == "news" %}
+   {% assign loopcount = loopcount | plus: 1 %}
+   <div class="col-md-4">
+      <h2><a class="post-link" href="{{ post.url | remove: "/" }}">{{ post.title }}</a></h2>
+      <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+      <p>{{ post.content | truncatewords: 20 | strip_html }}</p>  
+   </div>
+   {% endif %}
+
+   {% if post.category == "releases" %}
+   {% assign loopcount = loopcount | plus: 1 %}
+   <div class="col-md-4">
+      <h2><a class="post-link" href="{{ post.url | remove: "/" }}">{{ post.title }}</a></h2>
+      <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+      <p>{{ post.content | truncatewords: 20 | strip_html }}</p>  
+   </div>
+   {% endif %}
+   {% endif %}
+
+  {% endfor %}
+</div>
