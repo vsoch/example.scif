@@ -1,0 +1,59 @@
+# This is the plan for the sidebar table of contents.
+
+entries:
+
+- title:
+  folders:
+
+  - title: Information
+    output: web, pdf
+    folderitems:
+
+    - title: About Encode
+      url: about
+      output: web, pdf
+
+    - title: Background
+      url: background
+      output: web, pdf
+
+  - title: Getting Started
+    output: web, pdf
+    folderitems:
+ 
+    - title: Setup
+      output: web, pdf
+      url: setup
+
+    - title: Build
+      output: web, pdf
+      url: build
+
+    - title: Testing
+      output: web, pdf
+      url: testing
+
+  - title: Continued Development
+    output: web, pdf
+    folderitems:
+
+    - title: Github Development
+      url: development
+      output: web, pdf
+
+    - title: Using the Container
+      url: usage
+      output: web, pdf
+
+    - title: An Example
+      url: example
+      output: web, pdf
+
+
+  - title: Templates
+    output: web, pdf
+    folderitems:
+
+    - title: Encode Scientific Container Builder (CI)
+      external_url: https://www.github.com/vsoch/example.scif
+      output: web, pdf

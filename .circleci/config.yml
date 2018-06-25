@@ -154,6 +154,15 @@ jobs:
                 do
                     docker run -it --rm=false ${CONTAINER_NAME}:latest help ${app}
                 done
+      - run:
+          name: Run SCIF Tests
+          no_output_timeout: 2h
+          command: |
+            echo "Testing each installed SCIF app:"
+            for app in $(docker run -it --rm=false ${CONTAINER_NAME}:latest apps); 
+                do
+                    docker run -it --rm=false ${CONTAINER_NAME}:latest test ${app}
+                done
       - store_test_results:
           path: /home/circleci/out/tests
 
@@ -177,6 +186,12 @@ jobs:
               pigz -d --stdout /tmp/cache/container.tar.gz | docker load
               docker images
             fi
+      - run:
+          name: Upload Metadata or Result
+          no_output_timeout: 40m
+          command: |
+            echo "Here we could upload metadata, for example:"
+            docker run -it ${CONTAINER_NAME}:latest inspect
       - run:
           name: Deploy to Docker Hub
           no_output_timeout: 40m

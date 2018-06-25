@@ -1,0 +1,10 @@
+{% if page.category %}
+<meta name="keywords" content="{{ page.category }}">
+{% endif %}
+{% if page.title %}
+<meta name="name" content="{{ page.title }}">
+{% endif %}
+<meta name="thumbnail" content="assets/img/logo.gif">
+{% if page.targz %}
+<meta name="file" content="{{ site.repo }}/archive/{{ page.targz }}">
+{% endif %}
