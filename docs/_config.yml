@@ -1,6 +1,6 @@
 # Titles and Descriptions
-title: Pydicom
-description: Learning and resources for Dicom in Python
+title: SCIF Container Builder
+description: Build, test, and deploy reproducible containers
 logo: "assets/img/logo.gif"
 
 ## Preview / Development (Leave as is)
